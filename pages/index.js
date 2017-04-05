@@ -9,13 +9,13 @@ export default class extends React.Component {
   static async getInitialProps ({ req }) {
     // save some data
     const data = 'world';
-    const buffer = new Buffer(JSON.stringify(data))
+    const buffer = new Buffer(data)
     const obj = await ipfs.add(buffer);
     const hash = obj[0].hash;
 
     // retrieve it
     const stream = await ipfs.cat(hash);
-    const message = await new Promise((resolve) => stream.pipe(concat(data => resolve(JSON.parse(data)))));
+    const message = await new Promise((resolve) => stream.pipe(concat(data => resolve(data.toString()))));
     return { message };
   }
   render () {
